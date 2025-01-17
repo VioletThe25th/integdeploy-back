@@ -37,12 +37,6 @@ jobs:
         run: |
           npm ci
           npm test
-      
-      # Deploiement sur Codecov
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
 
       # Installation de la CLI Vercel
       - name: Install Vercel CLI
