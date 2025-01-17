@@ -31,7 +31,7 @@ describe('API Tests', () => {
       axios.get.mockImplementationOnce(() => Promise.resolve(data));
       await expect(countUsers()).resolves.toEqual(1);
       expect(axios.get).toHaveBeenCalledWith(
-        'http://localhost:3000/users',
+        `${process.env.SERVER_URL}/users`,
         );
     });
 
@@ -68,7 +68,7 @@ describe('API Tests', () => {
       axios.get.mockImplementationOnce(() => Promise.resolve(data));
       const result = await getAllUsers();
       expect(result).toEqual(data.data);
-      expect(axios.get).toHaveBeenCalledWith('http://localhost:3000/users');
+      expect(axios.get).toHaveBeenCalledWith(`${process.env.SERVER_URL}/users`);
     });
 
     it('handles API errors gracefully', async () => {
@@ -101,7 +101,7 @@ describe('API Tests', () => {
       const result = await createUser(newUser);
       expect(result).toEqual(data.data);
       expect(axios.post).toHaveBeenCalledWith(
-        'http://localhost:3000/users',
+        `${process.env.SERVER_URL}/users`,
         newUser
       );
     });
