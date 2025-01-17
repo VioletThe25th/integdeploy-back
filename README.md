@@ -10,7 +10,7 @@ Ce document décrit les modifications et ajouts réalisés sur le projet, notamm
 ## 1. **Configuration des tests avec Jest**
 
 ### **Ajout des tests unitaires**
-Nous avons mis en place des tests unitaires pour les différentes routes de l'API :
+Mise en place des tests unitaires pour les différentes routes de l'API :
 - **`countUsers`** : Teste la récupération du nombre d'utilisateurs.
 - **`getAllUsers`** : Vérifie que tous les utilisateurs sont récupérés correctement.
 - **`createUser`** : Valide la création d'un nouvel utilisateur.
