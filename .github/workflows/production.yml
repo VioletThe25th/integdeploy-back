@@ -1,44 +1,63 @@
-name: Vercel Production Deployment 
+name: Vercel Production Deployment
+
 env: 
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-# Controls when the action will run
 on:
-  # Triggers the workflow on push or pull requests events but only for the main branch
   push: 
     branches: [main]
   pull_request:
     branches: [main]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs: 
   build_test_and_deploy:
-    permissions:                                  # Job-level permissions configurations starts here
-      contents: write                             # 'write' access to repository contents
-      pull-requests: write                        # 'write' access to pull requests
-    # The type of runner that the job will run on
+    permissions:
+      contents: write
+      pull-requests: write
+
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [20.x]
-    
+
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Récupération du code source
       - uses: actions/checkout@v4
+      
+      # Installation de Node.js
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with: 
           node-version: ${{ matrix.node-version }}
+
+      # Installation des dépendances et exécution des tests
       - name: npm ci and test
         run: |
           npm ci
+          npm test
+
+      # Installation de la CLI Vercel
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
+
+      # Récupération des variables d'environnement de Vercel
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      # Récupération de l'URL du déploiement
+      - name: Fetch Vercel Deployment URL
+        run: echo "SERVER_URL=$(vercel inspect -o json --token=${{ secrets.VERCEL_TOKEN }} | jq -r '.url')" >> $GITHUB_ENV
+
+      # Utilisation de l'URL pour les tests ou autres actions
+      - name: Log Deployment URL
+        run: echo "Deployment URL is $SERVER_URL"
+
+      # Construction des artefacts du projet
       - name: Build Project Artifacts
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+
+      # Déploiement sur Vercel
       - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
