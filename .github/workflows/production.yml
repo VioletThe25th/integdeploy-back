@@ -48,7 +48,7 @@ jobs:
 
       # Récupération de l'URL du déploiement
       - name: Fetch Vercel Deployment URL
-        run: echo "SERVER_URL=$(vercel inspect -o json --token=${{ secrets.VERCEL_TOKEN }} | jq -r '.url')" >> $GITHUB_ENV
+        run: echo "SERVER_URL=$(vercel --token=${{ secrets.VERCEL_TOKEN }} ls --json | jq -r '.[] | select(.state == \"READY\") | .url' | head -n 1)" >> $GITHUB_ENV
 
       # Utilisation de l'URL pour les tests ou autres actions
       - name: Log Deployment URL
