@@ -38,8 +38,9 @@ jobs:
 
       - name: Force clean node_modules and npm cache
         run: |
-          sudo rm -rf node_modules package-lock.json ~/.npm
+          sudo rm -rf node_modules ~/.npm
           npm cache clean --force
+
 
       - name: Fix GitHub Actions workspace permissions
         run: sudo chown -R $(whoami) /home/runner/work
