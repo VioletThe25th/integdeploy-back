@@ -36,14 +36,15 @@ jobs:
       - name: Build the stack with docker
         run: docker compose -f docker-compose.yml up -d
 
+      # Nettoyage du cache sans supprimer package-lock.json
       - name: Force clean node_modules and npm cache
         run: |
           sudo rm -rf node_modules ~/.npm
           npm cache clean --force
 
-
-      - name: Fix GitHub Actions workspace permissions
-        run: sudo chown -R $(whoami) /home/runner/work
+      # Vérification de l'intégrité des fichiers avant installation
+      - name: Check workspace structure
+        run: ls -la && ls -la node_modules || echo "node_modules does not exist yet"
 
 
       # Installation des dépendances et exécution des tests
