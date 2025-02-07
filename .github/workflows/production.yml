@@ -36,6 +36,16 @@ jobs:
       - name: Build the stack with docker
         run: docker compose -f docker-compose.yml up -d
 
+      - name: Fix npm folder permissions
+        run: sudo chown -R $USER:$USER ~/.npm
+
+      - name: Clear npm cache
+        run: npm cache clean --force
+
+      - name: Remove node_modules and package-lock.json
+        run: rm -rf node_modules package-lock.json
+
+
       # Installation des dépendances et exécution des tests
       - name: npm ci and test
         run: |
