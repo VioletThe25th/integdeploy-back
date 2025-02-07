@@ -36,13 +36,14 @@ jobs:
       - name: Build the stack with docker
         run: docker compose -f docker-compose.yml up -d
 
-      - name: Wait for containers to be ready
-        run: sleep 10 && docker ps
-
-      - name: Fix npm folder permissions
+      - name: Force clean node_modules and npm cache
         run: |
-          mkdir -p ~/.npm
-          sudo chown -R $USER:$USER ~/.npm
+          sudo rm -rf node_modules package-lock.json ~/.npm
+          npm cache clean --force
+
+      - name: Fix GitHub Actions workspace permissions
+        run: sudo chown -R $(whoami) /home/runner/work
+
 
       # Installation des dépendances et exécution des tests
       - name: npm ci and test
