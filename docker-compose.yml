@@ -3,41 +3,26 @@ version: '3.1'
 
 services:
   
-  db:
-    image: mysql:latest
+  mongo_db:
+    image: mongo
     restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-    ports: 
-      - 3306:3306
-    volumes:
-      - ./sqlfiles/:/docker-entrypoint-initdb.d/
-
-  adminer:
-    depends_on:
-      - db
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
-
+  mongo_seed:
+    build: ./mongo-seed
+    links:
+      - mongo_db
   server:
     image: nodejs
     volumes:
-      - ./server:/server
+      - .:/server
       - /server/node_modules
-    build: 
-      context: .
-      dockerfile: DockerfileNodejs
+    build: .
     restart: always
     ports:
       - 8000:8000
     environment:
-      - MYSQL_HOST=db
-      - MYSQL_DATABASE
-      - MYSQL_USERNAME
-      - MYSQL_ROOT_PASSWORD
+      - MONGODB_URL=mongodb+srv://bilgerjeremy5705:b8209ze6531@cluster0.icxtwoq.mongodb.net/IntegDeploy?retryWrites=true&w=majority&appName=Cluster0
       - PORT=8000
+      - FRONT_URL
     depends_on:
-      - db
-    command: node server.js
+      - mongo_db
+    command: sh -c "npm install && node server.js"

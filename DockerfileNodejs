@@ -8,6 +8,10 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json ./
 COPY package-lock.json ./
 
-RUN npm install mysql2 cors dotenv express --silent
+RUN npm install mongoose cors dotenv express --silent
+
+COPY . .
 
 EXPOSE 8000
+
+CMD ["node", "server.js"]

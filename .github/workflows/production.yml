@@ -33,10 +33,17 @@ jobs:
         with: 
           node-version: ${{ matrix.node-version }}
 
+      - name: Build the stack with docker
+        run: docker-compose up -d
+
       # Installation des dépendances et exécution des tests
-      - name: npm ci
+      - name: npm ci and test
         run: |
           npm ci
+          npm run cypress:run
+
+      - name: Stop the stack
+        run: docker-compose down
 
       # Installation de la CLI Vercel
       - name: Install Vercel CLI

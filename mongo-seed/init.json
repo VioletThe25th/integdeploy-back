@@ -1,0 +1,18 @@
+[
+  {
+    "firstName": "Jeremy",
+    "lastName": "Bilger",
+    "email": "bilgerjeremy5705@gmail.com",
+    "postalCode": "34170",
+    "city": "Castelnau-Le-Lez",
+    "birthday": "1997-10-25"
+  },
+  {
+    "firstName": "Julien",
+    "lastName": "Bilger",
+    "email": "julienbilger05@gmail.com",
+    "postalCode": "34170",
+    "city": "Castelnau-Le-Lez",
+    "birthday": "2005-09-23"
+  }
+]
