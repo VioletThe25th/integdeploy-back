@@ -11,7 +11,7 @@ on:
     branches: [main]
   workflow_dispatch:
 
-jobs: 
+jobs:
   build_test_and_deploy:
     permissions:
       contents: write
@@ -24,30 +24,31 @@ jobs:
         node-version: [20.x]
 
     steps:
-      # Récupération du code source
       - uses: actions/checkout@v4
-      
-      # Installation de Node.js
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
-        with: 
+        with:
           node-version: ${{ matrix.node-version }}
 
       - name: Build the stack with docker
         run: docker compose -f docker-compose.yml up -d
 
-      # Nettoyage du cache sans supprimer package-lock.json
+      # ✅ Supprimer node_modules en forçant le root
       - name: Force clean node_modules and npm cache
         run: |
           sudo rm -rf node_modules ~/.npm
           npm cache clean --force
 
-      # Vérification de l'intégrité des fichiers avant installation
+      # ✅ Corriger les permissions pour éviter EACCES
+      - name: Fix workspace permissions
+        run: sudo chown -R $(whoami) $(pwd)
+
+      # ✅ Vérification avant npm ci
       - name: Check workspace structure
         run: ls -la && ls -la node_modules || echo "node_modules does not exist yet"
 
-
-      # Installation des dépendances et exécution des tests
+      # ✅ Installation propre des dépendances avec npm ci
       - name: npm ci and test
         run: |
           npm ci
