@@ -4,8 +4,6 @@ const User = require('../model/user');
 const router = express.Router();
 
 /**
- * @description Get All users
- * @route GET /users/
  * @swagger
  * /users/:
  *  get:
@@ -32,25 +30,69 @@ router.get('/', async (req, res) => {
 });
 
 /**
- * @description POST One new user
- * @route POST /users/
  * @swagger
  * /users/:
  *  post:
- *      security:
- *          - bearerAuth    []
+ *      summary: Créer un nouvel utilisateur
+ *      description: Ajoute un nouvel utilisateur à la base de données.
  *      tags:
  *          - Users
- *      summary: Create one user
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          firstName:
+ *                              type: string
+ *                              example: "John"
+ *                          lastName:
+ *                              type: string
+ *                              example: "Doe"
+ *                          email:
+ *                              type: string
+ *                              format: email
+ *                              example: "john.doe@example.com"
+ *                          postalCode:
+ *                              type: string
+ *                              example: "75000"
+ *                          city:
+ *                              type: string
+ *                              example: "Paris"
+ *                          birthday:
+ *                              type: string
+ *                              format: date
+ *                              example: "1990-01-01"
  *      responses:
  *          201:
- *              description: A successful response
- *          500:
- *              description: Server error
+ *              description: Utilisateur créé avec succès
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              user:
+ *                                  type: object
+ *                                  properties:
+ *                                      id:
+ *                                          type: string
+ *                                          example: "60d0fe4f5311236168a109ca"
+ *                                      firstName:
+ *                                          type: string
+ *                                          example: "John"
+ *                                      lastName:
+ *                                          type: string
+ *                                          example: "Doe"
+ *                                      email:
+ *                                          type: string
+ *                                          format: email
+ *                                          example: "john.doe@example.com"
  *          400:
- *              description: Bad credentials
+ *              description: Erreur de validation
+ *          500:
+ *              description: Erreur serveur
  */
-// Route pour créer un nouvel utilisateur
 router.post('/', async (req, res) => {
     try {
         const { firstName, lastName, email, postalCode, city, birthday } = req.body;
@@ -71,9 +113,10 @@ router.post('/', async (req, res) => {
         const savedUser = await newUser.save();
         res.status(201).json({ user: savedUser });
     } catch (error) {
-        console.error('Erreur lors de la création de l\'utilisateur :', error);
+        console.error("Erreur lors de la création de l'utilisateur :", error);
         res.status(500).json({ message: 'Erreur interne du serveur.' });
     }
 });
+
 
 module.exports = router;
