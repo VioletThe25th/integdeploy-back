@@ -3,6 +3,23 @@ const User = require('../model/user');
 
 const router = express.Router();
 
+/**
+ * @description Get All users
+ * @route GET /users/
+ * @swagger
+ * /users/:
+ *  get:
+ *      security:
+ *          - bearerAuth:   []
+ *      tags:
+ *          - Users
+ *      summary: Return all users
+ *      responses:
+ *          200:
+ *              description: A successful response
+ *          500:
+ *              description: Server error
+ */
 // Route pour obtenir tous les utilisateurs
 router.get('/', async (req, res) => {
     try {
@@ -14,6 +31,25 @@ router.get('/', async (req, res) => {
     }
 });
 
+/**
+ * @description POST One new user
+ * @route POST /users/
+ * @swagger
+ * /users/:
+ *  post:
+ *      security:
+ *          - bearerAuth    []
+ *      tags:
+ *          - Users
+ *      summary: Create one user
+ *      responses:
+ *          201:
+ *              description: A successful response
+ *          500:
+ *              description: Server error
+ *          400:
+ *              description: Bad credentials
+ */
 // Route pour créer un nouvel utilisateur
 router.post('/', async (req, res) => {
     try {
