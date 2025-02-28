@@ -20,9 +20,20 @@ async function main() {
 
 const app = express();
 
-// Configuration de CORS
+const allowedOrigins = [
+    process.env.FRONT_URL,
+    process.env.FRONT_DEPLOY
+];
+
 const corsOptions = {
-    origin: process.env.FRONT_URL,
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
     optionsSuccessStatus: 200,
     methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization']
