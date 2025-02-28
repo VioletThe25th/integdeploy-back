@@ -22,7 +22,7 @@ const app = express();
 
 // Configuration de CORS
 const corsOptions = {
-    origin: process.env.FRONT_DEPLOY,
+    origin: process.env.FRONT_DEPLOY || 'https://violetthe25th.github.io',
     optionsSuccessStatus: 200,
     methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization']
