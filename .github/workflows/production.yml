@@ -51,8 +51,8 @@ jobs:
       # Installation propre des dépendances avec npm ci
       - name: npm ci and test
         run: |
-          npm ci
-          npm run cypress:run
+          sudo npm ci
+          sudo npm run cypress:run
 
       - name: Stop the stack
         run: docker compose -f docker-compose.yml down
