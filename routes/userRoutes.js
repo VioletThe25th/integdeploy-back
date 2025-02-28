@@ -131,6 +131,50 @@ router.post('/', async (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * /users/login:
+ *  post:
+ *      summary: Connexion utilisateur
+ *      description: Authentifie un utilisateur avec son email et son mot de passe et retourne un token JWT.
+ *      tags:
+ *          - Users
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          email:
+ *                              type: string
+ *                              format: email
+ *                              example: "john.doe@example.com"
+ *                          password:
+ *                              type: string
+ *                              format: password
+ *                              example: "mypassword123"
+ *      responses:
+ *          200:
+ *              description: Connexion réussie, retourne le token JWT et le rôle de l'utilisateur.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              token:
+ *                                  type: string
+ *                                  example: "eyJhbGciOiJIUzI1NiIsInR..."
+ *                              role:
+ *                                  type: string
+ *                                  example: "admin"
+ *          401:
+ *              description: Mot de passe incorrect.
+ *          404:
+ *              description: Utilisateur non trouvé.
+ *          500:
+ *              description: Erreur serveur.
+ */
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
