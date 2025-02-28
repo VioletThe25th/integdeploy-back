@@ -21,8 +21,8 @@ async function main() {
 const app = express();
 
 const allowedOrigins = [
-    process.env.FRONT_URL,
-    process.env.FRONT_DEPLOY
+    process.env.FRONT_URL || 'http://localhost:3000',
+    process.env.FRONT_DEPLOY || 'https://violetthe25th.github.io'
 ];
 
 const corsOptions = {
@@ -30,6 +30,7 @@ const corsOptions = {
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
+            console.error(`Origine non autorisée : ${origin}`);
             callback(new Error('Not allowed by CORS'));
         }
     },
