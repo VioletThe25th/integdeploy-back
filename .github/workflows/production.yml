@@ -34,19 +34,19 @@ jobs:
       - name: Build the stack with docker
         run: docker compose -f docker-compose.yml up -d
 
-      # Supprimer node_modules en forçant le root
-      - name: Force clean node_modules and npm cache
-        run: |
-          sudo rm -rf node_modules ~/.npm
-          npm cache clean --force
+#      # Supprimer node_modules en forçant le root
+#      - name: Force clean node_modules and npm cache
+#        run: |
+#          sudo rm -rf node_modules ~/.npm
+#          npm cache clean --force
 
-      # Corriger les permissions pour éviter EACCES
-      - name: Fix workspace permissions
-        run: sudo chown -R $(whoami) $(pwd)
+#      # Corriger les permissions pour éviter EACCES
+#      - name: Fix workspace permissions
+#        run: sudo chown -R $(whoami) $(pwd)
 
-      # Vérification avant npm ci
-      - name: Check workspace structure
-        run: ls -la && ls -la node_modules || echo "node_modules does not exist yet"
+#      # Vérification avant npm ci
+#      - name: Check workspace structure
+#        run: ls -la && ls -la node_modules || echo "node_modules does not exist yet"
 
       # Installation propre des dépendances avec npm ci
       - name: npm ci and test
